@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book Now · Bags Away — Luggage Storage Newquay</title>
+<meta name="description" content="Book and pay for secure luggage, bike, pram and surfboard storage at Bags Away, K2 Gym Newquay. From £5 a day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#22386B; --navy-d:#1A2C54; --gold:#E4C16B; --gold-d:#cba84f;
+    --cream:#F4EAD2; --white:#ECEEF2; --ink:#16223f; --muted:#5b6680; --line:rgba(34,56,107,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Montserrat',sans-serif;color:var(--ink);background:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.brand{font-weight:800;letter-spacing:-.5px;line-height:1.1}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px}
+  header{background:var(--navy)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .brand{color:var(--white);font-size:1.4rem}.brand b{color:var(--gold)}
+  .nav a.back{color:var(--white);font-weight:600;font-size:.9rem;opacity:.9}
+
+  .hero{background:var(--navy);color:var(--white);padding:30px 0 46px;text-align:center}
+  .hero h1{font-size:clamp(2rem,6vw,2.8rem);color:#fff;font-weight:900;letter-spacing:-1px}
+  .hero p{color:rgba(236,238,242,.85);font-weight:500;margin-top:8px}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 10px 30px rgba(34,56,107,.10);padding:26px;margin:-26px auto 30px;position:relative}
+  label{display:block;font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;color:var(--navy);margin-bottom:6px}
+  .picker{display:grid;grid-template-columns:1fr 96px 96px;gap:12px;align-items:end}
+  select,input[type=number],input[type=text],input[type=tel],input[type=date]{
+    width:100%;padding:13px 12px;border:2px solid var(--line);border-radius:11px;font-family:inherit;font-size:1rem;font-weight:600;color:var(--ink);background:#fff;appearance:none}
+  select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2322386B' stroke-width='3'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+  select:focus,input:focus{outline:none;border-color:var(--navy)}
+  .add-btn{width:100%;margin-top:16px;background:var(--navy);color:#fff;font-weight:700;border:none;border-radius:11px;padding:14px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+  .add-btn:hover{background:var(--navy-d)}
+
+  .cart{margin:22px 0 0;border-top:1px dashed var(--line);padding-top:16px}
+  .cart:empty{display:none}
+  .line{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line)}
+  .line .desc{font-weight:600;font-size:.96rem}
+  .line .desc small{display:block;color:var(--muted);font-weight:500;font-size:.8rem}
+  .line .right{display:flex;align-items:center;gap:14px}
+  .line .cost{font-weight:800;color:var(--navy)}
+  .line .rm{color:var(--muted);cursor:pointer;font-size:1.3rem;line-height:1;border:none;background:none}
+  .empty{color:var(--muted);font-weight:500;text-align:center;padding:14px 0}
+  .total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;font-size:1.4rem;font-weight:900;color:var(--navy)}
+  .total small{font-weight:600;font-size:.8rem;color:var(--muted);display:block}
+
+  .details{margin-top:24px;border-top:1px dashed var(--line);padding-top:20px}
+  .det-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .field{margin-bottom:14px}
+  .pay{width:100%;margin-top:8px;background:var(--gold);color:var(--navy-d);font-weight:800;border:none;border-radius:12px;padding:17px;font-size:1.15rem;cursor:pointer;transition:.15s}
+  .pay:hover{filter:brightness(1.04)}
+  .pay:disabled{opacity:.5;cursor:not-allowed}
+  .wa{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:12px;background:#25D366;color:#063d20;font-weight:700;border-radius:12px;padding:14px;font-size:1rem}
+  .alt{text-align:center;color:var(--muted);font-size:.85rem;margin:14px 0 4px;font-weight:500}
+  .reassure{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;color:var(--navy);font-weight:600;font-size:.82rem;margin:8px 0 36px;text-align:center}
+  .reassure span{display:inline-flex;align-items:center;gap:6px}
+  .note{font-size:.78rem;color:var(--muted);margin-top:10px;text-align:center;font-weight:500}
+  .hide{display:none}
+  @media(max-width:560px){.picker{grid-template-columns:1fr 1fr;gap:10px}.picker .item-col{grid-column:1/3}.det-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">BAGS <b>AWAY</b></div>
+    <a class="back" href="/">← Back to site</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <h1>Book your storage</h1>
+    <p>Reserve in under a minute · from £5 a day · pay securely online</p>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="card">
+
+    <div class="picker">
+      <div class="item-col">
+        <label for="item">What are you storing?</label>
+        <select id="item">
+          <option value="luggage">Luggage / suitcase</option>
+          <option value="bike">Pedal bike</option>
+          <option value="pram">Pram / buggy</option>
+          <option value="surf">Surfboard</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label for="qty">Qty</label>
+        <input type="number" id="qty" min="1" max="100" value="1">
+      </div>
+      <div>
+        <label for="days">Days</label>
+        <input type="number" id="days" min="1" max="60" value="1">
+      </div>
+    </div>
+    <button class="add-btn" id="addBtn">+ Add to booking</button>
+
+    <div class="cart" id="cart"></div>
+    <div class="empty" id="emptyMsg">No items yet — add one above.</div>
+
+    <div class="total"><span>Total</span><span><span id="total">£0.00</span><small id="totalNote"></small></span></div>
+
+    <div class="details">
+      <form name="booking" data-netlify="true" netlify-honeypot="bot-field" id="bookForm">
+        <input type="hidden" name="form-name" value="booking">
+        <p class="hide"><label>Don't fill this: <input name="bot-field"></label></p>
+        <input type="hidden" name="order-summary" id="orderSummary">
+        <input type="hidden" name="order-total" id="orderTotal">
+        <div class="det-grid">
+          <div class="field"><label for="name">Your name</label><input type="text" id="name" name="name" placeholder="Jane Smith" required></div>
+          <div class="field"><label for="phone">Mobile number</label><input type="tel" id="phone" name="phone" placeholder="07…" required></div>
+        </div>
+        <div class="field"><label for="dropoff">Drop-off date</label><input type="date" id="dropoff" name="dropoff" required></div>
+        <button type="submit" class="pay" id="payBtn" disabled>Add items to continue</button>
+      </form>
+      <p class="alt">— or —</p>
+      <a class="wa" id="waBtn" href="#" target="_blank" rel="noopener">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.946C.16 5.335 5.495 0 12.05 0a11.82 11.82 0 018.413 3.488 11.82 11.82 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.044zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+        Book by WhatsApp instead
+      </a>
+      <p class="note">Pay securely with card or PayPal — no account needed. You'll get a tag for each item at drop-off.</p>
+    </div>
+
+  </div>
+  <div class="reassure">
+    <span>✓ Fully insured</span><span>✓ CCTV monitored</span><span>✓ Staffed reception</span><span>✓ K2 Gym, central Newquay</span>
+  </div>
+</div>
+
+<script>
+  // Prices for the live preview only — the server re-checks them at checkout.
+  var PRICES = { luggage:5, bike:5, pram:5, surf:5, other:5 }; // £ per item, per day
+  var WHATSAPP = "447971812567";
+  var LABELS = {luggage:"Luggage / suitcase", bike:"Pedal bike", pram:"Pram / buggy", surf:"Surfboard", other:"Other"};
+  var cart = [];
+
+  var $ = function(id){return document.getElementById(id);};
+  function gbp(n){return "£"+n.toFixed(2);}
+
+  function render(){
+    var c = $("cart"); c.innerHTML="";
+    cart.forEach(function(l,i){
+      var row=document.createElement("div"); row.className="line";
+      row.innerHTML='<div class="desc">'+l.qty+' × '+LABELS[l.key]+
+        '<small>'+l.days+' day'+(l.days>1?'s':'')+' @ £'+PRICES[l.key]+'/day</small></div>'+
+        '<div class="right"><span class="cost">'+gbp(l.cost)+'</span>'+
+        '<button class="rm" data-i="'+i+'" aria-label="Remove">×</button></div>';
+      c.appendChild(row);
+    });
+    $("emptyMsg").style.display = cart.length ? "none":"block";
+    var total = cart.reduce(function(s,l){return s+l.cost;},0);
+    $("total").textContent = gbp(total);
+    var n = cart.reduce(function(s,l){return s+l.qty;},0);
+    $("totalNote").textContent = cart.length ? n+" item"+(n>1?"s":""):"";
+    var pay=$("payBtn");
+    if(cart.length){pay.disabled=false; pay.textContent="Pay "+gbp(total)+" now";}
+    else{pay.disabled=true; pay.textContent="Add items to continue";}
+    $("orderTotal").value = total.toFixed(2);
+    $("orderSummary").value = cart.map(function(l){return l.qty+"× "+LABELS[l.key]+" ("+l.days+"d) = "+gbp(l.cost);}).join("; ");
+    updateWA(total);
+  }
+  function updateWA(total){
+    var msg="Hi Bags Away, I'd like to book: "+(cart.map(function(l){return l.qty+"× "+LABELS[l.key]+" for "+l.days+" day"+(l.days>1?"s":"");}).join(", ")||"(add items)")+". Total "+gbp(total)+".";
+    $("waBtn").href="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(msg);
+  }
+  $("addBtn").addEventListener("click",function(){
+    var key=$("item").value;
+    var qty=Math.max(1,Math.min(100,parseInt($("qty").value)||1));
+    var days=Math.max(1,Math.min(60,parseInt($("days").value)||1));
+    cart.push({key:key, qty:qty, days:days, cost:PRICES[key]*qty*days});
+    render();
+  });
+  $("cart").addEventListener("click",function(e){
+    if(e.target.classList.contains("rm")){cart.splice(+e.target.dataset.i,1); render();}
+  });
+
+  $("bookForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    if(!cart.length) return;
+    var btn=$("payBtn"); var label=btn.textContent;
+    btn.disabled=true; btn.textContent="Opening secure checkout…";
+    fetch("/.netlify/functions/create-checkout",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({cart:cart, name:$("name").value, phone:$("phone").value, dropoff:$("dropoff").value})
+    })
+    .then(function(r){return r.json();})
+    .then(function(data){
+      if(data && data.url){ window.location.href=data.url; }
+      else { throw new Error((data&&data.error)||"Checkout unavailable"); }
+    })
+    .catch(function(err){
+      alert("Sorry — couldn't open checkout ("+err.message+"). Please try again or book by WhatsApp.");
+      btn.disabled=false; btn.textContent=label;
+    });
+  });
+
+  // default drop-off date = today
+  $("dropoff").value = new Date().toISOString().slice(0,10);
+  render();
+</script>
+</body>
+</html>

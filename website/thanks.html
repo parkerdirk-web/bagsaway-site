@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking confirmed · Bags Away</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--navy:#22386B;--navy-d:#1A2C54;--gold:#E4C16B;--cream:#F4EAD2;--white:#ECEEF2;--ink:#16223f;--muted:#5b6680}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+  .box{max-width:540px}
+  .tick{width:88px;height:88px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 26px}
+  .tick svg{width:46px;height:46px;stroke:var(--navy-d);stroke-width:3.5;fill:none}
+  h1{font-size:clamp(2rem,7vw,2.8rem);font-weight:900;letter-spacing:-1px;margin-bottom:14px}
+  p{color:rgba(236,238,242,.85);font-weight:500;font-size:1.1rem;line-height:1.7;margin-bottom:10px}
+  .gold{color:var(--gold);font-weight:700}
+  .btns{margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+  a.btn{font-weight:700;border-radius:999px;padding:14px 26px;font-size:1rem}
+  .b1{background:var(--gold);color:var(--navy-d)}
+  .b2{background:transparent;color:var(--white);border:2px solid rgba(236,238,242,.5)}
+</style>
+</head>
+<body>
+  <div class="box">
+    <div class="tick"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
+    <h1>You're booked in!</h1>
+    <p>Payment received — thank you. We've got your details and we'll have space ready for you.</p>
+    <p>Bring your items to <span class="gold">K2 Gym, 27–29 Cliff Road, Newquay</span>. Reception will tag everything when you arrive.</p>
+    <p>Questions? Call or WhatsApp <span class="gold">07971&nbsp;812567</span>.</p>
+    <div class="btns">
+      <a class="btn b1" href="/">Back to home</a>
+      <a class="btn b2" href="https://wa.me/447971812567" target="_blank" rel="noopener">Message us</a>
+    </div>
+  </div>
+</body>
+</html>
