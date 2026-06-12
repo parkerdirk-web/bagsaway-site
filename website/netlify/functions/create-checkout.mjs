@@ -66,6 +66,10 @@ export async function handler(event) {
   params.append("metadata[phone]", (data.phone || "").slice(0, 60));
   params.append("metadata[dropoff_date]", (data.dropoff || "").slice(0, 40));
   params.append("metadata[items]", summary.join("; ").slice(0, 480));
+  params.append("metadata[email]", (data.email || "").slice(0, 200));
+  if (data.email && /.+@.+\..+/.test(data.email)) {
+    params.append("customer_email", data.email.slice(0, 200)); // prefills Stripe + sends receipt here
+  }
   params.append("payment_intent_data[description]", "Bags Away booking: " + summary.join("; ").slice(0, 200));
 
   try {
