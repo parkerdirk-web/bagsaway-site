@@ -8,32 +8,81 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root{--navy:#22386B;--navy-d:#1A2C54;--gold:#E4C16B;--cream:#F4EAD2;--white:#ECEEF2;--ink:#16223f;--muted:#5b6680}
+  :root{--navy:#22386B;--navy-d:#1A2C54;--gold:#E4C16B;--cream:#F4EAD2;--white:#ECEEF2;--ink:#16223f;--muted:#5b6680;--line:rgba(34,56,107,.14)}
   *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
-  .box{max-width:540px}
-  .tick{width:88px;height:88px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 26px}
-  .tick svg{width:46px;height:46px;stroke:var(--navy-d);stroke-width:3.5;fill:none}
-  h1{font-size:clamp(2rem,7vw,2.8rem);font-weight:900;letter-spacing:-1px;margin-bottom:14px}
-  p{color:rgba(236,238,242,.85);font-weight:500;font-size:1.1rem;line-height:1.7;margin-bottom:10px}
+  body{font-family:'Montserrat',sans-serif;background:var(--navy);color:var(--white);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+  .box{max-width:520px;width:100%;text-align:center}
+  .tick{width:80px;height:80px;border-radius:50%;background:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 22px}
+  .tick svg{width:42px;height:42px;stroke:var(--navy-d);stroke-width:3.5;fill:none}
+  h1{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:900;letter-spacing:-1px;margin-bottom:10px}
+  .sub{color:rgba(236,238,242,.85);font-weight:500;margin-bottom:24px}
+  .receipt{background:#fff;color:var(--ink);border-radius:16px;padding:24px;text-align:left;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+  .receipt h2{color:var(--navy);font-size:1.05rem;font-weight:800;letter-spacing:.3px;text-transform:uppercase;margin-bottom:4px}
+  .ref{color:var(--muted);font-weight:600;font-size:.85rem;margin-bottom:16px}
+  .ref b{color:var(--navy);font-family:monospace;font-size:1rem;letter-spacing:1px}
+  .row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid var(--line);font-weight:600;font-size:.95rem}
+  .row .c{color:var(--navy);font-weight:800;white-space:nowrap}
+  .meta{margin-top:14px;font-size:.9rem;font-weight:500;color:var(--ink)}
+  .meta div{padding:3px 0}.meta span{color:var(--muted)}
+  .tot{display:flex;justify-content:space-between;margin-top:14px;padding-top:12px;border-top:2px solid var(--navy);font-size:1.3rem;font-weight:900;color:var(--navy)}
+  .loading,.err{padding:18px;text-align:center;color:var(--muted);font-weight:600}
+  .tip{color:rgba(236,238,242,.8);font-weight:600;font-size:.9rem;margin:18px 0 0}
+  .info{color:rgba(236,238,242,.8);font-weight:500;font-size:.95rem;line-height:1.7;margin:18px 0 6px}
   .gold{color:var(--gold);font-weight:700}
-  .btns{margin-top:30px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-  a.btn{font-weight:700;border-radius:999px;padding:14px 26px;font-size:1rem}
-  .b1{background:var(--gold);color:var(--navy-d)}
-  .b2{background:transparent;color:var(--white);border:2px solid rgba(236,238,242,.5)}
+  .btns{margin-top:22px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  a.btn{font-weight:700;border-radius:999px;padding:13px 24px;font-size:.95rem}
+  .b1{background:var(--gold);color:var(--navy-d)}.b2{background:transparent;color:var(--white);border:2px solid rgba(236,238,242,.5)}
 </style>
 </head>
 <body>
   <div class="box">
     <div class="tick"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg></div>
     <h1>You're booked in!</h1>
-    <p>Payment received — thank you. We've got your details and we'll have space ready for you.</p>
-    <p>Bring your items to <span class="gold">K2 Gym, 27–29 Cliff Road, Newquay</span>. Reception will tag everything when you arrive.</p>
-    <p>Questions? Call or WhatsApp <span class="gold">07971&nbsp;812567</span>.</p>
+    <p class="sub">Payment received — thank you. Screenshot this as your receipt.</p>
+
+    <div class="receipt" id="receipt">
+      <div class="loading" id="loading">Loading your booking…</div>
+    </div>
+
+    <p class="tip">📸 Show this screen (or your emailed receipt) at drop-off.</p>
+    <p class="info">Bring your items to <span class="gold">K2 Gym, 27–29 Cliff Road, Newquay</span>. Reception will tag everything when you arrive.<br>Questions? Call or WhatsApp <span class="gold">07971 812567</span>.</p>
+
     <div class="btns">
       <a class="btn b1" href="/">Back to home</a>
       <a class="btn b2" href="https://wa.me/447971812567" target="_blank" rel="noopener">Message us</a>
     </div>
   </div>
+
+<script>
+  function gbp(p){return "£"+(p/100).toFixed(2);}
+  function esc(s){return (s||"").replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+  function param(n){return new URLSearchParams(location.search).get(n);}
+  var box=document.getElementById("receipt");
+  var sid=param("session_id");
+  if(!sid){ box.innerHTML='<div class="err">Booking confirmed. Your receipt has been emailed to you.</div>'; }
+  else{
+    fetch("/.netlify/functions/get-session?session_id="+encodeURIComponent(sid))
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d.error||!d.items){ throw new Error(); }
+      var rows=d.items.map(function(it){
+        return '<div class="row"><span>'+esc(it.name)+(it.qty>1?' × '+it.qty:'')+'</span><span class="c">'+gbp(it.amount)+'</span></div>';
+      }).join("");
+      var meta='';
+      if(d.name)    meta+='<div><span>Name:</span> '+esc(d.name)+'</div>';
+      if(d.dropoff) meta+='<div><span>Drop-off:</span> '+esc(d.dropoff)+'</div>';
+      if(d.email)   meta+='<div><span>Receipt sent to:</span> '+esc(d.email)+'</div>';
+      box.innerHTML=
+        '<h2>Bags Away — booking</h2>'+
+        '<div class="ref">Ref <b>'+esc(d.reference)+'</b></div>'+
+        rows+
+        '<div class="meta">'+meta+'</div>'+
+        '<div class="tot"><span>Paid</span><span>'+gbp(d.total)+'</span></div>';
+    })
+    .catch(function(){
+      box.innerHTML='<div class="err">Booking confirmed — your receipt has been emailed to you.</div>';
+    });
+  }
+</script>
 </body>
 </html>

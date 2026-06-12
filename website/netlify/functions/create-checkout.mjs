@@ -35,7 +35,7 @@ export async function handler(event) {
 
   const params = new URLSearchParams();
   params.append("mode", "payment");
-  params.append("success_url", origin + "/thanks.html");
+  params.append("success_url", origin + "/thanks.html?session_id={CHECKOUT_SESSION_ID}");
   params.append("cancel_url", origin + "/book.html");
   params.append("billing_address_collection", "auto");
   params.append("phone_number_collection[enabled]", "true");
