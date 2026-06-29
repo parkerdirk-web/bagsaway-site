@@ -217,8 +217,9 @@
     for(var t=6*60; t<=21*60; t+=30){
       var h=Math.floor(t/60), mi=t%60, ap=h<12?'am':'pm', hh=((h+11)%12)+1;
       var label=hh+':'+(mi<10?'0'+mi:mi)+' '+ap;
-      dt.insertAdjacentHTML('beforeend','<option>'+label+'</option>');
-      ct.insertAdjacentHTML('beforeend','<option>'+label+'</option>');
+      var val=(h<10?'0'+h:h)+':'+(mi<10?'0'+mi:mi); // 24h value so the calendar can read it
+      dt.insertAdjacentHTML('beforeend','<option value="'+val+'">'+label+'</option>');
+      ct.insertAdjacentHTML('beforeend','<option value="'+val+'">'+label+'</option>');
     }
   })();
 
