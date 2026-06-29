@@ -68,6 +68,7 @@ export async function handler(event) {
   params.append("metadata[dropoff_time]", (data.dropTime || "").slice(0, 20));
   params.append("metadata[collection_time]", (data.collectTime || "").slice(0, 20));
   params.append("metadata[items]", summary.join("; ").slice(0, 480));
+  params.append("metadata[source]", "bags_away_website"); // marker so the webhook ignores other gym payments
   params.append("metadata[email]", (data.email || "").slice(0, 200));
   if (data.email && /.+@.+\..+/.test(data.email)) {
     params.append("customer_email", data.email.slice(0, 200)); // prefills Stripe + sends receipt here

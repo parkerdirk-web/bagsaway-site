@@ -97,6 +97,8 @@ export async function handler(event) {
 
   const s = evt.data.object || {};
   const m = s.metadata || {};
+  // only act on Bags Away website bookings — ignore all other gym Stripe payments
+  if (m.source !== "bags_away_website") return { statusCode: 200, body: "Not a Bags Away booking" };
   const total = "£" + ((s.amount_total || 0) / 100).toFixed(2);
   const email = (s.customer_details && s.customer_details.email) || m.email || "";
   const ref = (s.id || "").slice(-8).toUpperCase();
