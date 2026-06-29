@@ -122,6 +122,10 @@
         </div>
         <div class="field"><label for="email">Email address</label><input type="email" id="email" name="email" placeholder="you@email.com" required></div>
         <div class="field"><label for="dropoff">Drop-off date</label><input type="date" id="dropoff" name="dropoff" required></div>
+        <div class="det-grid">
+          <div class="field"><label for="dropTime">Drop-off time</label><select id="dropTime" required></select></div>
+          <div class="field"><label for="collectTime">Collection time</label><select id="collectTime" required></select></div>
+        </div>
         <button type="submit" class="pay" id="payBtn" disabled>Add items to continue</button>
       </form>
       <p class="alt">— or —</p>
@@ -192,7 +196,7 @@
     btn.disabled=true; btn.textContent="Opening secure checkout…";
     fetch("/.netlify/functions/create-checkout",{
       method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({cart:cart, name:$("name").value, phone:$("phone").value, email:$("email").value, dropoff:$("dropoff").value})
+      body:JSON.stringify({cart:cart, name:$("name").value, phone:$("phone").value, email:$("email").value, dropoff:$("dropoff").value, dropTime:$("dropTime").value, collectTime:$("collectTime").value})
     })
     .then(function(r){return r.json();})
     .then(function(data){
@@ -204,6 +208,19 @@
       btn.disabled=false; btn.textContent=label;
     });
   });
+
+  // populate the time dropdowns (06:00–21:00, every 30 min)
+  (function(){
+    var dt=$("dropTime"), ct=$("collectTime");
+    dt.innerHTML='<option value="" disabled selected>Choose a time</option>';
+    ct.innerHTML='<option value="" disabled selected>Choose a time</option>';
+    for(var t=6*60; t<=21*60; t+=30){
+      var h=Math.floor(t/60), mi=t%60, ap=h<12?'am':'pm', hh=((h+11)%12)+1;
+      var label=hh+':'+(mi<10?'0'+mi:mi)+' '+ap;
+      dt.insertAdjacentHTML('beforeend','<option>'+label+'</option>');
+      ct.insertAdjacentHTML('beforeend','<option>'+label+'</option>');
+    }
+  })();
 
   // default drop-off date = today
   $("dropoff").value = new Date().toISOString().slice(0,10);

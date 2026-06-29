@@ -65,6 +65,8 @@ export async function handler(event) {
   params.append("metadata[customer_name]", (data.name || "").slice(0, 200));
   params.append("metadata[phone]", (data.phone || "").slice(0, 60));
   params.append("metadata[dropoff_date]", (data.dropoff || "").slice(0, 40));
+  params.append("metadata[dropoff_time]", (data.dropTime || "").slice(0, 20));
+  params.append("metadata[collection_time]", (data.collectTime || "").slice(0, 20));
   params.append("metadata[items]", summary.join("; ").slice(0, 480));
   params.append("metadata[email]", (data.email || "").slice(0, 200));
   if (data.email && /.+@.+\..+/.test(data.email)) {
