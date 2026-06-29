@@ -11,6 +11,28 @@ const LABELS = {
   other: "Other item",
 };
 
+// Turn "4:30 pm", "4:30pm" or "16:30" into minutes-since-midnight (or null).
+function toMinutes(t) {
+  t = (t || "").trim().toLowerCase();
+  let m = t.match(/^(\d{1,2}):(\d{2})\s*(am|pm)$/); // 12-hour with am/pm
+  if (m) {
+    let h = parseInt(m[1], 10) % 12;
+    if (m[3] === "pm") h += 12;
+    return h * 60 + parseInt(m[2], 10);
+  }
+  m = t.match(/^(\d{1,2}):(\d{2})$/); // 24-hour
+  if (m) {
+    const h = parseInt(m[1], 10), mi = parseInt(m[2], 10);
+    if (h <= 23 && mi <= 59) return h * 60 + mi;
+  }
+  return null;
+}
+// minutes-since-midnight -> "HH:MM"
+function hhmm(mins) {
+  const h = Math.floor(mins / 60), mi = mins % 60;
+  return (h < 10 ? "0" : "") + h + ":" + (mi < 10 ? "0" : "") + mi;
+}
+
 export async function handler(event) {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method not allowed" };
@@ -69,6 +91,20 @@ export async function handler(event) {
   params.append("metadata[collection_time]", (data.collectTime || "").slice(0, 20));
   params.append("metadata[items]", summary.join("; ").slice(0, 480));
   params.append("metadata[source]", "bags_away_website"); // marker so the webhook ignores other gym payments
+
+  // Build clean ISO 8601 start/end so the calendar shows a TIMED block, not all-day.
+  // Normalised here on the server, so it works no matter what format the dropdown sends.
+  const isoDate = (data.dropoff || "").trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(isoDate)) {
+    const startMin = toMinutes(data.dropTime);
+    let endMin = toMinutes(data.collectTime);
+    if (startMin != null) {
+      // ensure end is after start; if missing or not later, default to start + 2h (capped at 23:59)
+      if (endMin == null || endMin <= startMin) endMin = Math.min(startMin + 120, 23 * 60 + 59);
+      params.append("metadata[start_iso]", isoDate + "T" + hhmm(startMin) + ":00");
+      params.append("metadata[end_iso]", isoDate + "T" + hhmm(endMin) + ":00");
+    }
+  }
   params.append("metadata[email]", (data.email || "").slice(0, 200));
   if (data.email && /.+@.+\..+/.test(data.email)) {
     params.append("customer_email", data.email.slice(0, 200)); // prefills Stripe + sends receipt here
