@@ -129,26 +129,64 @@ export async function handler(event) {
     });
   } catch (e) { /* don't block emails if calendar fails */ }
 
-  // bespoke confirmation for the CUSTOMER
+  // bespoke confirmation + receipt for the CUSTOMER
   const firstName = (m.customer_name || "there").split(" ")[0];
+  const SITE = "https://bagsawaynewquay.com";
+  const MAP_IMG = SITE + "/assets/map.png";          // hosted street-map image, always loads
+  const DIRECTIONS = "https://maps.app.goo.gl/bkAxyZN5GxM9q8hm7"; // taps open the Bags Away @ K2 Gym pin
+  const WA = "https://wa.me/447890264387";
+  const PHONE = "07890 264387";
+
+  // numbered how-to step
+  const step = (n, title, body) =>
+    '<tr>' +
+    '<td valign="top" style="width:34px;padding:0 12px 14px 0">' +
+    '<div style="width:28px;height:28px;border-radius:50%;background:#21395E;color:#fff;font-weight:bold;font-size:14px;text-align:center;line-height:28px">' + n + '</div></td>' +
+    '<td valign="top" style="padding:0 0 14px 0;font-size:14px;line-height:1.5">' +
+    '<b style="color:#21395E">' + title + '</b><br>' + body + '</td></tr>';
+
   const custHtml =
-    '<div style="font-family:Arial,Helvetica,sans-serif;max-width:540px;margin:0 auto;color:#16223f">' +
+    '<div style="font-family:Arial,Helvetica,sans-serif;max-width:560px;margin:0 auto;color:#16223f">' +
+    // header
     '<div style="background:#21395E;color:#fff;padding:26px 24px;border-radius:12px 12px 0 0">' +
     '<div style="font-size:24px;font-weight:bold;letter-spacing:-.5px">Bags Away</div>' +
     '<div style="opacity:.85;font-size:14px;margin-top:2px">Luggage storage · K2 Gym, Newquay</div></div>' +
     '<div style="border:1px solid #eee;border-top:none;padding:24px;border-radius:0 0 12px 12px">' +
-    '<h1 style="font-size:22px;margin:0 0 6px;color:#21395E">You\'re booked in, ' + esc(firstName) + '! 🎉</h1>' +
-    '<p style="font-size:15px;line-height:1.6;margin:0 0 18px">Thanks for booking with Bags Away — your payment is confirmed. Here are your details:</p>' +
-    '<div style="background:#F3EAD2;border-radius:12px;padding:16px 18px">' +
-    '<div style="font-size:13px;color:#5d6b82;margin-bottom:8px">Booking ref <b style="color:#21395E;font-family:monospace">' + esc(ref) + '</b></div>' +
-    '<ul style="font-size:15px;margin:0 0 10px;padding-left:18px">' + itemsHtml + '</ul>' +
-    '<div style="font-size:15px"><b>Drop-off:</b> ' + esc(m.dropoff_date) + (m.dropoff_time ? ' at ' + esc(m.dropoff_time) : '') + '</div>' +
-    '<div style="font-size:15px"><b>Collection time:</b> ' + esc(m.collection_time || "—") + '</div>' +
-    '<div style="font-size:18px;font-weight:bold;color:#21395E;margin-top:8px">Total paid: ' + total + '</div></div>' +
-    '<h3 style="font-size:16px;color:#21395E;margin:22px 0 6px">When you arrive</h3>' +
-    '<p style="font-size:15px;line-height:1.6;margin:0 0 16px">Bring your items to <b>K2 Gym, 27–29 Cliff Road, Newquay, TR7 2NE</b>. Reception will tag everything and hand you a matching tag — keep it for collection. Just show this email or your tag.</p>' +
-    '<table style="font-size:14px;color:#3b4a63"><tr><td style="padding:2px 14px 2px 0;color:#777">Open</td><td>Mon–Fri 6am–9pm · Sat 6am–6pm · Sun 8am–4pm</td></tr>' +
-    '<tr><td style="padding:2px 14px 2px 0;color:#777">Questions</td><td>Call or WhatsApp 07971 812567</td></tr></table>' +
+    '<h1 style="font-size:22px;margin:0 0 6px;color:#21395E">You\'re booked in, ' + esc(firstName) + '! 🧳</h1>' +
+    '<p style="font-size:15px;line-height:1.6;margin:0 0 18px">Thanks for booking with Bags Away — your payment is confirmed. <b>This email is your receipt</b>, and below is everything you need for drop-off.</p>' +
+    // RECEIPT card
+    '<div style="background:#F3EAD2;border-radius:12px;padding:18px 18px 16px">' +
+    '<table style="width:100%;border-collapse:collapse"><tr>' +
+    '<td style="font-size:13px;color:#5d6b82">Booking ref<br><b style="color:#21395E;font-family:monospace;font-size:16px;letter-spacing:1px">' + esc(ref) + '</b></td>' +
+    '<td align="right"><span style="background:#21395E;color:#fff;font-size:12px;font-weight:bold;padding:5px 12px;border-radius:999px">PAID</span></td>' +
+    '</tr></table>' +
+    '<ul style="font-size:15px;margin:12px 0 12px;padding-left:18px">' + itemsHtml + '</ul>' +
+    '<table style="font-size:15px;width:100%;border-collapse:collapse">' +
+    '<tr><td style="color:#5d6b82;padding:3px 0">Drop-off</td><td align="right"><b>' + esc(m.dropoff_date) + (m.dropoff_time ? ' at ' + esc(m.dropoff_time) : '') + '</b></td></tr>' +
+    '<tr><td style="color:#5d6b82;padding:3px 0">Collection</td><td align="right"><b>' + esc(m.collection_time || "—") + '</b></td></tr>' +
+    '<tr><td style="padding-top:10px;border-top:2px solid #21395E;font-size:18px;font-weight:bold;color:#21395E">Total paid</td>' +
+    '<td align="right" style="padding-top:10px;border-top:2px solid #21395E;font-size:18px;font-weight:bold;color:#21395E">' + total + '</td></tr>' +
+    '</table></div>' +
+    // how it works
+    '<h3 style="font-size:16px;color:#21395E;margin:24px 0 12px">How it works</h3>' +
+    '<table style="border-collapse:collapse">' +
+    step('1', 'Bring your items to K2 Gym', 'We\'re on the top floor at <b>27–29 Cliff Road, Newquay, TR7 2NE</b>. Show this email or your booking ref at reception.') +
+    step('2', 'We tag your bags', 'Each item gets a tag and you\'ll get a matching one — keep it safe, it\'s how you collect.') +
+    step('3', 'Go enjoy Newquay, hands-free', 'Come back any time before we close, show your tag, and grab your things. That\'s it! 🏄') +
+    '</table>' +
+    // map
+    '<h3 style="font-size:16px;color:#21395E;margin:22px 0 10px">Find us</h3>' +
+    '<a href="' + DIRECTIONS + '" style="text-decoration:none"><img src="' + MAP_IMG + '" alt="Map to K2 Gym, 27-29 Cliff Road, Newquay TR7 2NE" width="512" style="width:100%;max-width:512px;border-radius:12px;display:block;border:1px solid #e6e6e6"></a>' +
+    '<div style="margin:12px 0 4px"><a href="' + DIRECTIONS + '" style="display:inline-block;background:#21395E;color:#fff;font-size:15px;font-weight:bold;text-decoration:none;padding:12px 22px;border-radius:999px">Get directions →</a></div>' +
+    // hours + contact
+    '<table style="font-size:14px;color:#3b4a63;margin-top:18px">' +
+    '<tr><td style="padding:2px 14px 2px 0;color:#777;vertical-align:top">Opening hours</td>' +
+    '<td><table style="font-size:14px;border-collapse:collapse">' +
+    '<tr><td style="padding:0 18px 2px 0;color:#16223f">Mon–Fri</td><td style="color:#16223f">6am–9pm</td></tr>' +
+    '<tr><td style="padding:0 18px 2px 0;color:#16223f">Sat</td><td style="color:#16223f">6am–6pm</td></tr>' +
+    '<tr><td style="padding:0 18px 0 0;color:#16223f">Sun</td><td style="color:#16223f">8am–4pm</td></tr>' +
+    '</table></td></tr>' +
+    '<tr><td style="padding:8px 14px 2px 0;color:#777;vertical-align:top">Questions</td><td style="padding-top:8px">Call or WhatsApp <a href="' + WA + '" style="color:#21395E;font-weight:bold;text-decoration:none">' + PHONE + '</a><br>or just reply to this email.</td></tr></table>' +
     '<p style="font-size:14px;color:#5d6b82;margin-top:22px">Enjoy Newquay — hands free. 🏄<br>The Bags Away team</p>' +
     '</div></div>';
 
