@@ -170,9 +170,10 @@ export async function handler(event) {
     // how it works
     '<h3 style="font-size:16px;color:#21395E;margin:24px 0 12px">How it works</h3>' +
     '<table style="border-collapse:collapse">' +
-    step('1', 'Come to K2 Gym', 'Storage is on the <b>ground floor, just inside the front door</b>. Give us a call or WhatsApp on <a href="https://wa.me/447763901135" style="color:#21395E;font-weight:bold;text-decoration:none">07763 901135</a> or <a href="tel:+441637859955" style="color:#21395E;font-weight:bold;text-decoration:none">01637 859955</a>. If no one answers, feel free to leave your bags downstairs and pop up to reception on the 3rd floor to grab a member of staff.') +
-    step('2', 'We tag your bags', 'Each item gets a tag and you\'ll get a matching one — keep it safe, it\'s how you collect.') +
-    step('3', 'Go enjoy Newquay, hands-free', 'Come back any time before we close, show your tag, and grab your things. That\'s it! 🏄') +
+    step('1', 'Come to K2 Gym', '27–29 Cliff Road, Newquay, TR7 2NE. The luggage store is on the <b>ground floor, just inside the front door</b>.') +
+    step('2', 'Ring the bell &amp; message us', 'At the ground-floor entrance, ring the bell and give us a call or WhatsApp on <a href="https://wa.me/447763901135" style="color:#21395E;font-weight:bold;text-decoration:none">07763 901135</a>.') +
+    step('3', 'We come down &amp; tag your bags', 'A staff member will greet you, tag each item and hand you a matching tag — keep it safe, it\'s how you collect.') +
+    step('4', 'Go enjoy Newquay, hands-free', 'Come back any time before we close, show your tag and grab your things. That\'s it! 🏄') +
     '</table>' +
     // map
     '<h3 style="font-size:16px;color:#21395E;margin:22px 0 10px">Find us</h3>' +
